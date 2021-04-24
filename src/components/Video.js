@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import StyledVideoWrapper from './styles/StyledVideoWrapper';
 import StyledVideo from './styles/StyledVideo';
 
-const Video = props =>{ 
+const Video = ({active, autoplay, endCallback, progressCallback})=>{ 
     return(
         <StyledVideo>
             <StyledVideoWrapper>
