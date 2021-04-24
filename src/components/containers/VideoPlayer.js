@@ -3,34 +3,33 @@ import Video from '../Video';
 import Playlist from '../containers/Playlist';
 import {ThemeProvider}  from 'styled-components';
 import StyledVideoPlayer from  '../styles/StyledVideoPlayer'
-import NightMode from '../Nightmode';
 
-const theme={
-    bgcolor:'#353335',
-    bgcolorItem: '#414141',
-    bgcolorItemActive: '#405c63', 
-    bgcolorPlayed:'#526d4e',
-    border:'none',
-    borderPlayed:'#none',
-    color: '#fff'
-}
-
-const themeLight={
-    bgcolor:'#353335',
-    bgcolorItem: '#414141',
-    bgcolorItemActive: '#80a7bi',
-    bgcolorPlayed:'#7d9979',
-    border:'1px solid #353535',
-    borderPlayed:'#none',
-    color: '#353535'
-}
+const theme = {
+    bgcolor: "#353535",
+    bgcolorItem: "#414141",
+    bgcolorItemActive: "#405c63",
+    bgcolorPlayed: "#526d4e",
+    border: "none",
+    borderPlayed: "none",
+    color: "#fff"
+  };
+  
+  const themeLight = {
+    bgcolor: "#fff",
+    bgcolorItem: "#fff",
+    bgcolorItemActive: "#80a7b1",
+    bgcolorPlayed: "#7d9979",
+    border: "1px solid #353535",
+    borderPlayed: "none",
+    color: "#353535"
+  };
 
 const VideoPlayer = ({match, history, location}) =>{
     const videos = JSON.parse(document.querySelector('[name="videos"]').value);
     const [state , setState] = useState({
         videos : videos.playlist,
         activeVideo:videos.playlist[0],
-        nightMode: true,
+        nightMode: false,
         playlistId: videos.playlistId,
         autoplay: false,
     })
@@ -54,12 +53,15 @@ const VideoPlayer = ({match, history, location}) =>{
             })
         }
     },[history, location.autoplay, match.params.activeVideo,state.activeVideo.id ])
-    const nightModeCallback =()=>{
+    
+    const nightModeCallback = () => {
+        setState({ ...state, nightMode: !state.nightMode });
+      }
 
-    }
     const endCallback =() =>{
         
     }
+    
     const progressCallback =()=>{
         
     }
@@ -77,7 +79,7 @@ const VideoPlayer = ({match, history, location}) =>{
                 videos={state.videos}
                 active={state.activeVideo}
                 nightModeCallback={nightModeCallback}
-                nightMode={NightMode}
+                nightMode={state.nightMode}
                 />
             </StyledVideoPlayer>
             ): null}
