@@ -8,6 +8,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: 10px;
     font-family: 'Hind', sans-serif;
   }
-`;
+`; 
 
 export default GlobalStyle;

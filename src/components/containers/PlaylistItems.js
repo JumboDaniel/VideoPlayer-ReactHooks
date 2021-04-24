@@ -1,11 +1,20 @@
 import React from 'react';
 import PlaylistItem from '../PlaylistItem'
-const PlaylistItems = props =>{
+import StyledPlaylistItems from '../styles/StyledPlaylistitems'
+const PlaylistItems = ({videos, active}) =>{
     return(
-        <>
-            <PlaylistItem/>
-        </>
-    )
+        <StyledPlaylistItems>
+            {videos.map(video =>(
+                <PlaylistItem 
+                video={video}
+                key={video.id}
+                active={video.id === active.id ? true: false}
+                played={video.played}
+                
+                />
+            ))}
+        </StyledPlaylistItems>
+    ) 
 }
 
 export default PlaylistItems;
