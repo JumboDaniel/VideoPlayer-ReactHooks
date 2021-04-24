@@ -33,6 +33,11 @@ const VideoPlayer = ({match, history, location}) =>{
         playlistId: videos.playlistId,
         autoplay: false,
     })
+
+    useEffect(()=>{
+        localStorage.setItem(`${state.playlistId}`, JSON.stringify(...state))
+    })
+
     useEffect(()=>{
         const videoId = match.params.activeVideo;
         if(videoId !== undefined) {
@@ -59,11 +64,28 @@ const VideoPlayer = ({match, history, location}) =>{
       }
 
     const endCallback =() =>{
-        
+        const videoId = match.params.activeVideo;
+        const currentVideoIndex = state.videos.findIndex(
+            video => video.id === videoId
+        )
+        const nextVideo = currentVideoIndex === state.videos.length -1 ? 0 : currentVideoIndex + 1
+    
+        history.push({
+            pathname: `${state.videos[nextVideo].id}`,
+            autoplay:false
+        })
     }
     
-    const progressCallback =()=>{
-        
+    const progressCallback =(e)=>{
+        if(e.playedSeconds > 10 && e.playedSeconds< 11 ){
+            setState({
+                ...state,
+                videos: state.videos.map(element=>{
+                    return element.id === state.activeVideo.id ? {...element, played:true}
+                    :element;
+                })
+            })
+        }
     }
     return(
         <ThemeProvider theme={state.nightMode ? theme : themeLight}>
