@@ -26,17 +26,21 @@ const theme = {
 
 const VideoPlayer = ({match, history, location}) =>{
     const videos = JSON.parse(document.querySelector('[name="videos"]').value);
+
+    const savedState = JSON.parse(localStorage.getItem(`$video.playlistId`));
+
     const [state , setState] = useState({
-        videos : videos.playlist,
-        activeVideo:videos.playlist[0],
-        nightMode: false,
-        playlistId: videos.playlistId,
+        videos : savedState ? savedState.video : videos.playlist,
+        activeVideo:savedState ? savedState.activeVideo : videos.playlist[0],
+        nightMode: savedState ? savedState.nightMode :false,
+        playlistId:savedState ? savedState.PlaylistId :videos.playlistId,
         autoplay: false,
     })
 
-    useEffect(()=>{
-        localStorage.setItem(`${state.playlistId}`, JSON.stringify(...state))
-    })
+    useEffect(
+        ()=>{
+        localStorage.setItem(`${state.playlistId}`, JSON.stringify({...state}))
+    },[state])
 
     useEffect(()=>{
         const videoId = match.params.activeVideo;
@@ -57,7 +61,7 @@ const VideoPlayer = ({match, history, location}) =>{
                 autoplay:false
             })
         }
-    },[history, location.autoplay, match.params.activeVideo,state.activeVideo.id ])
+    },[history, location.autoplay, match.params.activeVideo,state.activeVideo.id, state.videos ])
     
     const nightModeCallback = () => {
         setState({ ...state, nightMode: !state.nightMode });
